@@ -22,6 +22,28 @@ exports.getJobs = async (req, res) => {
     }
 }
 
+exports.getJob = async (req, res) => {
+    const { id } = req.params
+    try {
+        if (!req.user || !req.user.id) {
+            return res.status(401).send('Unauthorized: User not authenticated')
+        }
+
+        const userId = req.user.id
+
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).send('Invalid user ID')
+        }
+
+        const jobs = await JobModel.findById({ user: userId })
+
+        res.json({ jobs })
+    } catch (err) {
+        console.error(err)
+        res.status(500).send('Error retrieving jobs')
+    }
+}
+
 exports.addJob = async (req, res) => {
     try {
         if (!req.user || !req.user.id) {
