@@ -3,7 +3,7 @@ const uniqueValidator = require('mongoose-unique-validator')
 
 const UserSchema = new mongoose.Schema(
     {
-        firstName: {
+        firstname: {
             type: String,
             lowercase: true,
             required: [true, "First name can't be blank"],
@@ -12,7 +12,7 @@ const UserSchema = new mongoose.Schema(
             maxlength: [50, 'First name must be less than 50 characters'],
             index: true,
         },
-        lastName: {
+        lastname: {
             type: String,
             lowercase: true,
             required: [true, "Last name can't be blank"],

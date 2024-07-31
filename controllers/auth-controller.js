@@ -5,45 +5,48 @@ const UserModel = require('../models/user')
 
 const authController = {
     register: async (req, res) => {
-        const { firstName, lastName, email, password } = req.validatedData
+        const { firstname, lastname, email, password } = req.validatedData
         console.log('Getting inside the register controller endpoint')
 
         try {
             // Check if the email already exists
+
             const existingUser = await UserModel.findOne({ email })
             if (existingUser) {
                 return res.status(422).json(new ErrorResponse('Email already in use', 422))
             }
-
+            console.log('before saving')
             // Hash the password
             const hashedPassword = await bcrypt.hash(password, 10)
 
             // Create a new user
             const newUser = new UserModel({
-                firstName,
-                lastName,
+                firstname,
+                lastname,
                 email,
                 password: hashedPassword,
             })
 
             // Save to the database
+
             const savedUser = await newUser.save()
 
             // Generate JWT
             const token = await generateJWT({
                 id: savedUser._id,
-                firstName: savedUser.firstName,
-                lastName: savedUser.lastName,
+                firstname: savedUser.firstname,
+                lastname: savedUser.lastname,
             })
 
             res.json({
                 title: 'Registration Successful',
-                message: `${firstName} ${lastName} has been registered`,
+                message: `${firstname} ${lastname} has been registered`,
                 token: token.token,
                 user: {
                     id: savedUser._id,
-                    firstName: savedUser.firstName,
-                    lastName: savedUser.lastName,
+                    firstname: savedUser.firstname,
+                    lastname: savedUser.lastname,
+                    email: savedUser.email,
                 },
             })
         } catch (error) {
@@ -57,6 +60,7 @@ const authController = {
         try {
             // Find the user
             const user = await UserModel.findOne({ email })
+            console.log(` user when find one ${email} `)
             if (!user) {
                 return res.status(422).json(new ErrorResponse('Invalid credentials', 422))
             }
@@ -70,18 +74,18 @@ const authController = {
             // Generate JWT
             const token = await generateJWT({
                 id: user._id,
-                firstName: user.firstName,
-                lastName: user.lastName,
+                firstname: user.firstname,
+                lastname: user.lastname,
             })
 
             res.json({
                 title: 'Login Successful',
-                message: `${user.firstName} ${user.lastName} is logged in`,
+                message: `${user.firstname} ${user.lastname} is logged in`,
                 token: token.token,
                 user: {
                     id: user._id,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
+                    firstname: user.firstname,
+                    lastname: user.lastname,
                 },
             })
         } catch (error) {
@@ -101,8 +105,8 @@ const authController = {
             // Generate JWT
             const token = await generateJWT({
                 id: user._id,
-                firstName: user.firstName,
-                lastName: user.lastName,
+                firstname: user.firstname,
+                lastname: user.lastname,
             })
 
             res.json({ token: token.token })

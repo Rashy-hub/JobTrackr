@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken')
 
 // Génération du JWT
-const generateJWT = ({ id, pseudo, isAdmin }) => {
+const generateJWT = ({ id, firstname, lastname }) => {
     return new Promise((resolve, reject) => {
-        const data = { id, pseudo, isAdmin }
+        const data = { id, firstname, lastname }
         const secret = process.env.JWT_SECRET
 
         if (!secret) {
@@ -14,7 +14,7 @@ const generateJWT = ({ id, pseudo, isAdmin }) => {
             algorithm: 'HS512', // Algorithme pour la signature du token
             audience: process.env.JWT_AUDIENCE || 'default_audience',
             issuer: process.env.JWT_ISSUER || 'default_issuer',
-            expiresIn: '1y', // Durée de validité du token
+            expiresIn: '1d', // Durée de validité du token
         }
 
         jwt.sign(data, secret, options, (error, token) => {
@@ -34,7 +34,7 @@ const generateJWT = ({ id, pseudo, isAdmin }) => {
 }
 
 // Décodage du JWT
-const decodeJWT = (token) => {
+/* const decodeJWT = (token) => {
     return new Promise((resolve, reject) => {
         const secret = process.env.JWT_SECRET
 
@@ -45,6 +45,27 @@ const decodeJWT = (token) => {
         jwt.verify(token, secret, (error, data) => {
             if (error) {
                 return reject(new Error('Invalid JWT'))
+            }
+            resolve({
+                id: data.id,
+                pseudo: data.pseudo,
+                isAdmin: data.isAdmin,
+            })
+        })
+    })
+} */
+
+const decodeJWT = (token) => {
+    return new Promise((resolve, reject) => {
+        const secret = process.env.JWT_SECRET
+
+        if (!secret) {
+            return reject(new Error('JWT secret not defined in environment'))
+        }
+
+        jwt.verify(token, secret, { clockTolerance: 0 }, (error, data) => {
+            if (error) {
+                return reject(new Error('Invalid JWT or JWT expired'))
             }
             resolve({
                 id: data.id,

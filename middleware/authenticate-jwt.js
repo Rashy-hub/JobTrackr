@@ -38,7 +38,7 @@ const authenticateJwt = (options = { adminRight: false }) => {
             // On continue :)
             next()
         } catch (error) {
-            console.log(error)
+            console.log('Error lors de la verification du token', error)
             res.sendStatus(403)
         }
     }

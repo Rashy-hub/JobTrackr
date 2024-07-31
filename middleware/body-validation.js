@@ -21,6 +21,7 @@ const bodyValidation = (yupValidator, errorCode = 422) => {
             .validate(req.body, { abortEarly: false })
             .then((data) => {
                 // Ajout d'une propriété "validedData" avec les données validées par yup
+
                 req.validatedData = data
 
                 // Appel de la méthode "next"
