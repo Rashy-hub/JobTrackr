@@ -35,35 +35,41 @@ const UserSchema = new mongoose.Schema(
             trim: true,
             match: [/^https?:\/\/(www\.)?github\.com\/[a-zA-Z0-9_-]+$/, 'GitHub profile URL is invalid'],
             maxlength: [100, 'GitHub profile URL must be less than 100 characters'],
+            default: null,
         },
         profilePicture: {
             public_id: {
                 type: String,
                 trim: true,
+                default: null, // Add a default value
             },
             url: {
                 type: String,
                 trim: true,
                 match: [/^https?:\/\/.+/, 'Profile picture URL is invalid'],
                 maxlength: [200, 'Profile picture URL must be less than 200 characters'],
+                default: null, // Add a default value
             },
         },
         CV: {
             public_id: {
                 type: String,
                 trim: true,
+                default: null, // Add a default value
             },
             url: {
                 type: String,
                 trim: true,
                 match: [/^https?:\/\/.+/, 'CV URL is invalid'],
                 maxlength: [200, 'CV URL must be less than 200 characters'],
+                default: null, // Add a default value
             },
         },
         password: {
             type: String,
             required: [true, 'Password is required'],
             minlength: [6, 'Password must be at least 6 characters long'],
+            default: null, // Add a default value
         },
         offers: [
             {

@@ -33,28 +33,6 @@ const generateJWT = ({ id, firstname, lastname }) => {
     })
 }
 
-// Décodage du JWT
-/* const decodeJWT = (token) => {
-    return new Promise((resolve, reject) => {
-        const secret = process.env.JWT_SECRET
-
-        if (!secret) {
-            return reject(new Error('JWT secret not defined in environment'))
-        }
-
-        jwt.verify(token, secret, (error, data) => {
-            if (error) {
-                return reject(new Error('Invalid JWT'))
-            }
-            resolve({
-                id: data.id,
-                pseudo: data.pseudo,
-                isAdmin: data.isAdmin,
-            })
-        })
-    })
-} */
-
 const decodeJWT = (token) => {
     return new Promise((resolve, reject) => {
         const secret = process.env.JWT_SECRET
@@ -69,8 +47,8 @@ const decodeJWT = (token) => {
             }
             resolve({
                 id: data.id,
-                pseudo: data.pseudo,
-                isAdmin: data.isAdmin,
+                firstname: data.firstname,
+                lastname: data.lastname,
             })
         })
     })

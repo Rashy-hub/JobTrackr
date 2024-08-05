@@ -24,7 +24,6 @@ const bodyValidation = (yupValidator, errorCode = 422) => {
 
                 req.validatedData = data
 
-                // Appel de la méthode "next"
                 next()
             })
             .catch((yupError) => {

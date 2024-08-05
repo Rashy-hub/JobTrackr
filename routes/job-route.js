@@ -1,13 +1,13 @@
 const express = require('express')
-const jobController = require('../controllers/job-controller')
+const { createJob, getJobById, deleteJob, updateJob, getJobsByUser } = require('../controllers/job-controller')
 const { authenticateJwt } = require('../middleware/authenticate-jwt')
 
 const jobRouter = express.Router()
 
-jobRouter.get('jobs', authenticateJwt(), jobController.getJobs)
-jobRouter.get('/jobs/:id', authenticateJwt(), jobController.getJob)
-jobRouter.post('/jobs', authenticateJwt(), jobController.addJob)
-jobRouter.put('/jobs/:id', authenticateJwt(), jobController.updateJob)
-jobRouter.delete('/jobs/:id', authenticateJwt(), jobController.deleteJob)
+jobRouter.get('/jobs', authenticateJwt(), getJobsByUser)
+jobRouter.get('/jobs/:id', authenticateJwt(), getJobById)
+jobRouter.post('/jobs', authenticateJwt(), createJob)
+jobRouter.put('/jobs/:id', authenticateJwt(), updateJob)
+jobRouter.delete('/jobs/:id', authenticateJwt(), deleteJob)
 
 module.exports = jobRouter

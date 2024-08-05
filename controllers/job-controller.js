@@ -1,129 +1,138 @@
+const Job = require('../models/job')
 const mongoose = require('mongoose')
-const JobModel = require('../models/Job')
+const { ErrorResponse } = require('../utils/error-schema')
 
-exports.getJobs = async (req, res) => {
+// Create a new job
+const createJob = async (req, res) => {
     try {
         if (!req.user || !req.user.id) {
-            return res.status(401).send('Unauthorized: User not authenticated')
+            return res.status(401).json(new ErrorResponse('Unauthorized: User not authenticated', 401))
         }
 
         const userId = req.user.id
+        const { title, website, contact, userExtraInfo } = req.body
 
-        if (!mongoose.Types.ObjectId.isValid(userId)) {
-            return res.status(400).send('Invalid user ID')
-        }
-
-        const jobs = await JobModel.find({ user: userId })
-
-        res.json({ jobs })
-    } catch (err) {
-        console.error(err)
-        res.status(500).send('Error retrieving jobs')
+        /*{
+    "title": "Front end dev",
+    "website": "https://front-company.com",
+    "contact": {
+        "name": "Alice Johnson",
+        "email": "alice.johnson@data-company.com",
+        "phone": "+11876543231",
+        "address": "456 Data Rd, City, Country"
+    },
+    "userExtraInfo": {
+        "origin": "Candidature spontanée",
+        "status": "CV sent",
+        "comments": "Looking forward to hearing back."
     }
-}
+} */
 
-exports.getJob = async (req, res) => {
-    const { id } = req.params
-    try {
-        if (!req.user || !req.user.id) {
-            return res.status(401).send('Unauthorized: User not authenticated')
-        }
-
-        const userId = req.user.id
-
-        if (!mongoose.Types.ObjectId.isValid(userId)) {
-            return res.status(400).send('Invalid user ID')
-        }
-
-        const jobs = await JobModel.findById({ user: userId })
-
-        res.json({ jobs })
-    } catch (err) {
-        console.error(err)
-        res.status(500).send('Error retrieving jobs')
-    }
-}
-
-exports.addJob = async (req, res) => {
-    try {
-        if (!req.user || !req.user.id) {
-            return res.status(401).send('Unauthorized: User not authenticated')
-        }
-
-        const userId = req.user.id
-        const { title, company, website, contact, origin, status, comment } = req.body
-
-        const job = new JobModel({
-            user: userId,
+        const newJob = new Job({
             title,
-            company,
             website,
             contact,
-            origin,
-            status,
-            comment,
+            userExtraInfo,
+            user: userId,
         })
 
-        await job.save()
-
-        const jobs = await JobModel.find({ user: userId })
-        res.json({ jobs })
-    } catch (err) {
-        console.error(err)
-        res.status(500).send('Error adding job')
+        const job = await newJob.save()
+        res.status(201).json(job)
+    } catch (error) {
+        res.status(500).json(new ErrorResponse('Internal server error: ' + error.message, 500))
     }
 }
 
-exports.updateJob = async (req, res) => {
-    const { id } = req.params
-
+// Get job by ID
+const getJobById = async (req, res) => {
     try {
-        if (!req.user || !req.user.id) {
-            return res.status(401).send('Unauthorized: User not authenticated')
+        const jobId = req.params.id
+        console.log('HELLO')
+        if (!mongoose.Types.ObjectId.isValid(jobId)) {
+            return res.status(400).json(new ErrorResponse('Invalid job ID', 400))
         }
 
-        const userId = req.user.id
-
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).send('Invalid job ID')
-        }
-
-        const job = await JobModel.findOneAndUpdate({ _id: id, user: userId }, req.body, { new: true, runValidators: true })
+        const job = await Job.findById(jobId) //.populate('user', 'firstname lastname email')
 
         if (!job) {
-            return res.status(404).send('Job not found')
+            return res.status(404).json(new ErrorResponse('Job not found', 404))
         }
 
-        res.json({ job })
-    } catch (err) {
-        console.error(err)
-        res.status(500).send('Error updating job')
+        res.json(job)
+    } catch (error) {
+        res.status(500).json(new ErrorResponse('Internal server error: ' + error.message, 500))
     }
 }
 
-exports.deleteJob = async (req, res) => {
-    const { id } = req.params
-
+// Update job by ID
+const updateJob = async (req, res) => {
     try {
-        if (!req.user || !req.user.id) {
-            return res.status(401).send('Unauthorized: User not authenticated')
+        const jobId = req.params.id
+
+        if (!mongoose.Types.ObjectId.isValid(jobId)) {
+            return res.status(400).json(new ErrorResponse('Invalid job ID', 400))
         }
 
-        const userId = req.user.id
+        const updateData = { ...req.body }
 
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).send('Invalid job ID')
-        }
-
-        const job = await JobModel.findOneAndDelete({ _id: id, user: userId })
+        const job = await Job.findByIdAndUpdate(jobId, updateData, { new: true })
 
         if (!job) {
-            return res.status(404).send('Job not found')
+            return res.status(404).json(new ErrorResponse('Job not found', 404))
+        }
+
+        res.json(job)
+    } catch (error) {
+        res.status(500).json(new ErrorResponse('Internal server error: ' + error.message, 500))
+    }
+}
+
+// Delete job by ID
+const deleteJob = async (req, res) => {
+    try {
+        const jobId = req.params.id
+
+        if (!mongoose.Types.ObjectId.isValid(jobId)) {
+            return res.status(400).json(new ErrorResponse('Invalid job ID', 400))
+        }
+
+        const job = await Job.findByIdAndDelete(jobId)
+
+        if (!job) {
+            return res.status(404).json(new ErrorResponse('Job not found', 404))
         }
 
         res.json({ message: 'Job deleted successfully' })
-    } catch (err) {
-        console.error(err)
-        res.status(500).send('Error deleting job')
+    } catch (error) {
+        res.status(500).json(new ErrorResponse('Internal server error: ' + error.message, 500))
     }
+}
+
+// Get all jobs for a user
+const getJobsByUser = async (req, res) => {
+    try {
+        if (!req.user || !req.user.id) {
+            return res.status(401).json(new ErrorResponse('Unauthorized: User not authenticated', 401))
+        }
+
+        const userId = req.user.id
+
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json(new ErrorResponse('Invalid user ID', 400))
+        }
+
+        const jobs = await Job.find({ user: userId })
+
+        res.json(jobs)
+    } catch (error) {
+        res.status(500).json(new ErrorResponse('Internal server error: ' + error.message, 500))
+    }
+}
+
+module.exports = {
+    createJob,
+    getJobById,
+    updateJob,
+    deleteJob,
+    getJobsByUser,
 }

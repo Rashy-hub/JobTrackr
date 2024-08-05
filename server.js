@@ -2,13 +2,15 @@ require('dotenv-flow').config() // Load environment variables from .env file
 
 const express = require('express')
 const cors = require('cors')
-const path = require('path')
+const cron = require('node-cron')
 const mongoose = require('mongoose')
 
 const jobRouter = require('./routes/job-route')
 const authRouter = require('./routes/auth-route')
 const logRequest = require('./middleware/request-logger')
 const { registratedRoutes, extractRoutes } = require('./middleware/registratedRoutes')
+const { wakeUpSelf } = require('./utils/wakupself')
+const profilRouter = require('./routes/profil-route')
 
 const app = express()
 app.use(cors())
@@ -17,6 +19,7 @@ app.use(express.json())
 
 //extract env variables
 const { PORT, NODE_ENV, MONGODB_URI, MONGO_LOCAL } = process.env
+
 const port = PORT
 let mongoURI = null
 // Connect to MongoDB
@@ -39,8 +42,16 @@ app.use(express.urlencoded({ extended: false }))
 // Routes
 registratedRoutes.push(jobRouter)
 registratedRoutes.push(authRouter)
+registratedRoutes.push(profilRouter)
+
+//Enregistrement des routes
 
 app.use('/api', ...registratedRoutes)
+
+// Route pour vérifier le réveil
+app.get('/api/wakeup', (req, res) => {
+    res.status(200).json('Wakeup call received!')
+})
 
 app.use('*', extractRoutes, (req, res) => {
     const errorMessage = 'Page not found.Here are all available (public) routes:'
@@ -50,6 +61,11 @@ app.use('*', extractRoutes, (req, res) => {
     }
 
     res.status(404).json(responseBody)
+})
+// Planifier une tâche cron toutes les 14 minutes
+cron.schedule('*/14 * * * *', () => {
+    console.log('Envoi de la requête pour éviter la mise en veille...')
+    wakeUpSelf()
 })
 
 app.listen(port, () => {

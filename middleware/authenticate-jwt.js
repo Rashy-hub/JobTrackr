@@ -8,19 +8,15 @@ const UserModel = require('../models/user')
  */
 const authenticateJwt = (options = { adminRight: false }) => {
     return async (req, res, next) => {
-        // Récupération du header d'authentification
         const authHeader = req.headers['authorization']
 
-        // Récupération du JWT
         const token = authHeader && authHeader.split(' ')[1]
 
-        // Si aucun token n'a été reçu, erreur 401.
         console.log('looking for token ')
         if (!token) {
             return res.sendStatus(401)
         }
 
-        // Récupération des données du JWT
         try {
             const tokenData = await decodeJWT(token)
 
@@ -32,7 +28,6 @@ const authenticateJwt = (options = { adminRight: false }) => {
                 }
             }
 
-            // Ajout des infos du token à l'objet "request" de Express
             req.user = tokenData
 
             // On continue :)

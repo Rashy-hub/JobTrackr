@@ -4,7 +4,7 @@ const { ErrorResponse } = require('../utils/error-schema')
 const UserModel = require('../models/user')
 
 const authController = {
-    register: async (req, res) => {
+    /*     register: async (req, res) => {
         const { firstname, lastname, email, password } = req.validatedData
         console.log('Getting inside the register controller endpoint')
 
@@ -16,10 +16,9 @@ const authController = {
                 return res.status(422).json(new ErrorResponse('Email already in use', 422))
             }
             console.log('before saving')
-            // Hash the password
-            const hashedPassword = await bcrypt.hash(password, 10)
+            const salt = await bcrypt.genSalt(10)
+            const hashedPassword = await bcrypt.hash(password, salt)
 
-            // Create a new user
             const newUser = new UserModel({
                 firstname,
                 lastname,
@@ -31,7 +30,6 @@ const authController = {
 
             const savedUser = await newUser.save()
 
-            // Generate JWT
             const token = await generateJWT({
                 id: savedUser._id,
                 firstname: savedUser.firstname,
@@ -53,6 +51,113 @@ const authController = {
             res.status(422).json(new ErrorResponse('Registration failed: ' + error.message, 422))
         }
     },
+ */ register: async (req, res, next) => {
+        console.log('Getting inside the register controller endpoint')
+        const { firstname, lastname, email, password } = req.validatedData
+
+        try {
+            const existingUser = await UserModel.findOne({ email })
+            if (existingUser) {
+                return res.status(422).json(new ErrorResponse('Email already in use', 422))
+            }
+            console.log('before saving')
+            const salt = await bcrypt.genSalt(10)
+            const hashedPassword = await bcrypt.hash(password, salt)
+
+            const newUser = new UserModel({
+                firstname,
+                lastname,
+                email,
+                password: hashedPassword,
+            })
+
+            // Ajouter les résultats des téléchargements Cloudinary
+            /*           if (req.uploadResults) {
+                req.uploadResults.forEach((upload) => {
+                    if (upload.fieldname === 'profilePicture' && upload.result) {
+                        newUser.profilePicture = {
+                            public_id: upload.result.public_id,
+                            url: upload.result.secure_url,
+                        }
+                    }
+                    if (upload.fieldname === 'cv' && upload.result) {
+                        newUser.CV = {
+                            public_id: upload.result.public_id,
+                            url: upload.result.secure_url,
+                        }
+                    }
+                })
+            }
+ */
+            const savedUser = await newUser.save()
+            req.user = { id: savedUser._id }
+            // req.user.id = savedUser._id
+            /*          const token = await generateJWT({
+                id: savedUser._id,
+                firstname: savedUser.firstname,
+                lastname: savedUser.lastname,
+            })
+
+            res.json({
+                title: 'Registration Successful',
+                message: `${firstname} ${lastname} has been registered`,
+                token: token.token,
+                user: {
+                    id: savedUser._id,
+                    firstname: savedUser.firstname,
+                    lastname: savedUser.lastname,
+                    email: savedUser.email,
+                },
+            }) */
+            next()
+        } catch (error) {
+            res.status(422).json(new ErrorResponse('Registration failed: ' + error.message, 422))
+        }
+    },
+    updateUserWithFiles: async (req, res) => {
+        try {
+            const userId = req.user.id
+            const user = await UserModel.findById(userId)
+
+            if (req.uploadResults) {
+                req.uploadResults.forEach((upload) => {
+                    if (upload.fieldname === 'profilePicture' && upload.result) {
+                        user.profilePicture = {
+                            public_id: upload.result.public_id,
+                            url: upload.result.secure_url,
+                        }
+                    }
+                    if (upload.fieldname === 'cv' && upload.result) {
+                        user.CV = {
+                            public_id: upload.result.public_id,
+                            url: upload.result.secure_url,
+                        }
+                    }
+                })
+            }
+
+            await user.save()
+            const token = await generateJWT({
+                id: user._id,
+                firstname: user.firstname,
+                lastname: user.lastname,
+            })
+
+            res.json({
+                title: 'Registration Successful',
+                token: token.token,
+                message: 'Files uploaded and user updated successfully',
+                user: {
+                    id: user._id,
+                    firstname: user.firstname,
+                    lastname: user.lastname,
+                    email: user.email,
+                },
+            })
+        } catch (error) {
+            res.status(500).json(new ErrorResponse('Failed to update user with files: ' + error.message, 500))
+        }
+    },
 
     login: async (req, res) => {
         const { email, password } = req.validatedData
@@ -62,13 +167,13 @@ const authController = {
             const user = await UserModel.findOne({ email })
             console.log(` user when find one ${email} `)
             if (!user) {
-                return res.status(422).json(new ErrorResponse('Invalid credentials', 422))
+                return res.status(422).json(new ErrorResponse('Invalid credentials : user not found', 422))
             }
 
             // Check password
             const isValid = await bcrypt.compare(password, user.password)
             if (!isValid) {
-                return res.status(422).json(new ErrorResponse('Invalid credentials', 422))
+                return res.status(422).json(new ErrorResponse('Invalid credentials : password not correct', 422))
             }
 
             // Generate JWT
