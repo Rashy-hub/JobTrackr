@@ -64,7 +64,6 @@ const fileValidator = yup.object().shape({
             console.log(value.size) // Debug: Vérifiez la taille du fichier
             return value.size <= 10 * 1024 * 1024 // 10 Mo
         })
-        .nullable()
         .test('fileType', 'Unsupported file format', (value) => {
             if (!value) return true // Autoriser les champs vides (optionnels)
             return ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'].includes(value.mimetype)
