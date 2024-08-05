@@ -58,20 +58,25 @@ const refreshValidator = yup.object().shape({
 const fileValidator = yup.object().shape({
     profilePicture: yup
         .mixed()
+        .nullable()
         .test('fileSize', 'File too large', (value) => {
             if (!value) return true // Autoriser les champs vides (optionnels)
             console.log(value.size) // Debug: Vérifiez la taille du fichier
             return value.size <= 10 * 1024 * 1024 // 10 Mo
         })
+        .nullable()
         .test('fileType', 'Unsupported file format', (value) => {
             if (!value) return true // Autoriser les champs vides (optionnels)
             return ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'].includes(value.mimetype)
         }),
 
-    cv: yup.mixed().test('fileType', 'CV must be a PDF file', (value) => {
-        if (!value) return true // Autoriser les champs vides (optionnels)
-        return value.mimetype === 'application/pdf' // Utilisez 'mimetype' au lieu de 'type'
-    }),
+    cv: yup
+        .mixed()
+        .nullable()
+        .test('fileType', 'CV must be a PDF file', (value) => {
+            if (!value) return true // Autoriser les champs vides (optionnels)
+            return value.mimetype === 'application/pdf' // Utilisez 'mimetype' au lieu de 'type'
+        }),
 })
 
 module.exports = fileValidator
