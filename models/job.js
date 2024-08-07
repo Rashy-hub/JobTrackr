@@ -16,6 +16,12 @@ const JobSchema = new mongoose.Schema(
             match: [/^https?:\/\/.+/, 'Website URL is invalid'],
             maxlength: [200, 'Website URL must be less than 200 characters'],
         },
+        company: {
+            type: String,
+            required: [true, "Company name can't be blank"],
+            trim: true,
+            maxlength: [100, 'Company name must be less than 100 characters'],
+        },
         contact: {
             name: {
                 type: String,

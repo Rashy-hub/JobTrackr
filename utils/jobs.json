@@ -1,0 +1,226 @@
+[
+    {
+        "title": "Front End Developer",
+        "website": "https://frontend-dev.com",
+        "company": "Frontend Dev Inc",
+        "contact": {
+            "name": "Alice Johnson",
+            "email": "alice.johnson@frontend-dev.com",
+            "phone": "+11234567890",
+            "address": "123 Frontend Lane, Silicon Valley, CA"
+        },
+        "userExtraInfo": {
+            "origin": "job offer",
+            "status": "interview",
+            "comments": "Looking forward to meeting the candidate."
+        }
+    },
+    {
+        "title": "Backend Developer",
+        "website": "https://backend-dev.com",
+        "company": "Backend Dev Ltd",
+        "contact": {
+            "name": "Bob Smith",
+            "email": "bob.smith@backend-dev.com",
+            "phone": "+12123456789",
+            "address": "456 Backend Road, San Francisco, CA"
+        },
+        "userExtraInfo": {
+            "origin": "candidature spontanée",
+            "status": "cv sent",
+            "comments": "The interview is set for next week."
+        }
+    },
+    {
+        "title": "UX/UI Designer",
+        "website": "https://ux-ui-designer.com",
+        "company": "Design Experts",
+        "contact": {
+            "name": "Carol Williams",
+            "email": "carol.williams@ux-ui-designer.com",
+            "phone": "+13012345678",
+            "address": "789 Design Avenue, New York, NY"
+        },
+        "userExtraInfo": {
+            "origin": "job offer",
+            "status": "interested",
+            "comments": "Reviewing portfolio and resume."
+        }
+    },
+    {
+        "title": "Data Scientist",
+        "website": "https://data-scientist.com",
+        "company": "Data Solutions Inc",
+        "contact": {
+            "name": "David Brown",
+            "email": "david.brown@data-scientist.com",
+            "phone": "+14012345678",
+            "address": "101 Data Street, Boston, MA"
+        },
+        "userExtraInfo": {
+            "origin": "job offer",
+            "status": "negative",
+            "comments": "Candidate has strong data analysis skills."
+        }
+    },
+    {
+        "title": "Digital Marketer",
+        "website": "https://digital-marketer.com",
+        "company": "Marketing Pros",
+        "contact": {
+            "name": "Emily Davis",
+            "email": "emily.davis@digital-marketer.com",
+            "phone": "+15012345678",
+            "address": "202 Marketing Blvd, Chicago, IL"
+        },
+        "userExtraInfo": {
+            "origin": "candidature spontanée",
+            "status": "cv sent",
+            "comments": "Looking for experience with social media campaigns."
+        }
+    },
+    {
+        "title": "Product Manager",
+        "website": "https://product-manager.com",
+        "company": "Product Innovators",
+        "contact": {
+            "name": "Frank Miller",
+            "email": "frank.miller@product-manager.com",
+            "phone": "+16012345678",
+            "address": "303 Product Lane, Seattle, WA"
+        },
+        "userExtraInfo": {
+            "origin": "job offer",
+            "status": "interested",
+            "comments": "Discussing product roadmaps in the interview."
+        }
+    },
+    {
+        "title": "Software Engineer",
+        "website": "https://software-engineer.com",
+        "company": "Tech Innovations",
+        "contact": {
+            "name": "Grace Wilson",
+            "email": "grace.wilson@software-engineer.com",
+            "phone": "+17012345678",
+            "address": "404 Engineering Drive, Austin, TX"
+        },
+        "userExtraInfo": {
+            "origin": "candidature spontanée",
+            "status": "interview",
+            "comments": "Initial screening in progress."
+        }
+    },
+    {
+        "title": "Sales Manager",
+        "website": "https://sales-manager.com",
+        "company": "Sales Strategies",
+        "contact": {
+            "name": "Hannah Moore",
+            "email": "hannah.moore@sales-manager.com",
+            "phone": "+18012345678",
+            "address": "505 Sales Street, Denver, CO"
+        },
+        "userExtraInfo": {
+            "origin": "job offer",
+            "status": "negative",
+            "comments": "Experience with large accounts is a plus."
+        }
+    },
+    {
+        "title": "Customer Support Specialist",
+        "website": "https://customer-support.com",
+        "company": "Support Solutions",
+        "contact": {
+            "name": "Ivy Taylor",
+            "email": "ivy.taylor@customer-support.com",
+            "phone": "+19012345678",
+            "address": "606 Support Road, San Diego, CA"
+        },
+        "userExtraInfo": {
+            "origin": "candidature spontanée",
+            "status": "cv sent",
+            "comments": "Strong communication skills required."
+        }
+    },
+    {
+        "title": "Graphic Designer",
+        "website": "https://graphic-designer.com",
+        "company": "Creative Studios",
+        "contact": {
+            "name": "Jack Anderson",
+            "email": "jack.anderson@graphic-designer.com",
+            "phone": "+20012345678",
+            "address": "707 Design Blvd, Portland, OR"
+        },
+        "userExtraInfo": {
+            "origin": "job offer",
+            "status": "cv sent",
+            "comments": "Looking for creativity and portfolio diversity."
+        }
+    },
+    {
+        "title": "Network Engineer",
+        "website": "https://network-engineer.com",
+        "company": "Network Solutions",
+        "contact": {
+            "name": "Katherine White",
+            "email": "katherine.white@network-engineer.com",
+            "phone": "+21012345678",
+            "address": "808 Network Street, Philadelphia, PA"
+        },
+        "userExtraInfo": {
+            "origin": "job offer",
+            "status": "interested",
+            "comments": "Reviewing networking experience and certifications."
+        }
+    },
+    {
+        "title": "HR Specialist",
+        "website": "https://hr-specialist.com",
+        "company": "HR Experts",
+        "contact": {
+            "name": "Liam Harris",
+            "email": "liam.harris@hr-specialist.com",
+            "phone": "+22012345678",
+            "address": "909 HR Lane, Miami, FL"
+        },
+        "userExtraInfo": {
+            "origin": "candidature spontanée",
+            "status": "negative",
+            "comments": "Experience with recruitment and employee relations is a plus."
+        }
+    },
+    {
+        "title": "Content Writer",
+        "website": "https://content-writer.com",
+        "company": "Content Creations",
+        "contact": {
+            "name": "Mia Johnson",
+            "email": "mia.johnson@content-writer.com",
+            "phone": "+23012345678",
+            "address": "101 Writing Street, Los Angeles, CA"
+        },
+        "userExtraInfo": {
+            "origin": "job offer",
+            "status": "interview",
+            "comments": "Looking for strong writing skills and creativity."
+        }
+    },
+    {
+        "title": "DevOps Engineer",
+        "website": "https://devops-engineer.com",
+        "company": "Ops Tech",
+        "contact": {
+            "name": "Noah Davis",
+            "email": "noah.davis@devops-engineer.com",
+            "phone": "+24012345678",
+            "address": "202 Ops Lane, San Jose, CA"
+        },
+        "userExtraInfo": {
+            "origin": "candidature spontanée",
+            "status": "interested",
+            "comments": "Experience with CI/CD pipelines is essential."
+        }
+    }
+]

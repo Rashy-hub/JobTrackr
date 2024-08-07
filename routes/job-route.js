@@ -1,9 +1,10 @@
 const express = require('express')
-const { createJob, getJobById, deleteJob, updateJob, getJobsByUser } = require('../controllers/job-controller')
+const { createJob, getJobById, deleteJob, updateJob, getJobsByUser, populateJob } = require('../controllers/job-controller')
 const { authenticateJwt } = require('../middleware/authenticate-jwt')
 
 const jobRouter = express.Router()
 
+jobRouter.get('/jobs/populate', authenticateJwt(), populateJob)
 jobRouter.get('/jobs', authenticateJwt(), getJobsByUser)
 jobRouter.get('/jobs/:id', authenticateJwt(), getJobById)
 jobRouter.post('/jobs', authenticateJwt(), createJob)
