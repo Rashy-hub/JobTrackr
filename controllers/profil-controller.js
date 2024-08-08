@@ -49,8 +49,10 @@ const updateProfile = async (req, res) => {
 
         // If there are uploaded files, include their Cloudinary URLs in the update data
         if (req.uploadResults) {
+            console.log('uploadResults has been set')
             req.uploadResults.forEach(({ fieldname, result, error }) => {
                 if (result) {
+                    console.log(`file detected : ${fieldname} url : ${result.secure_url}`)
                     if (fieldname === 'cv') {
                         updateData = { ...updateData, ...{ CV: { public_id: result.public_id, url: result.secure_url } } }
                     } else if (fieldname === 'profilePicture') {
@@ -61,8 +63,9 @@ const updateProfile = async (req, res) => {
                 }
                 // Handle errors if needed
             })
+        } else {
+            console.log('profil-controler.js : updateProfile => No file detected')
         }
-
         const user = await User.findByIdAndUpdate(req.user.id, updateData, { new: true })
         if (!user) {
             return res.status(404).json(new ErrorResponse('User not found', 404)) // Not Found

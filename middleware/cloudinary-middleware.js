@@ -9,6 +9,7 @@ const { uploadToCloudinary } = require('../utils/cloudinary-utils')
 const cloudinaryMiddleware = (options = { resourceType: 'auto', folderPath: '' }) => {
     return async (req, res, next) => {
         if (!req.files) {
+            console.log('coudinaryMiddleware: no file to process multer did somethin wrong ')
             return next() // No files to process
         }
         const userId = req.user && req.user.id // Supposons que l'ID de l'utilisateur soit disponible dans req.user.id
