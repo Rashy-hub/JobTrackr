@@ -4,11 +4,11 @@ const axios = require('axios')
 
 const wakeUpSelf = async () => {
     try {
-        const response = await axios.get(`${process.env.RENDER_EXTERNAL_URL}`)
+        const response = await axios.get('https://jobtrackr-backend.onrender.com/api/wakeup')
 
-        console.log(`Requête envoyée à ${`${process.env.RENDER_EXTERNAL_URL}`} pour éviter la mise en veille ${response.data}`)
+        console.log(`Requête envoyée à https://jobtrackr-backend.onrender.com/api/wakeup pour éviter la mise en veille ${response.data}`)
     } catch (error) {
-        console.error(`Erreur lors de la requête à ${`${process.env.RENDER_EXTERNAL_URL}`}:`, error)
+        console.error(`Erreur lors de la requête à "https://jobtrackr-backend.onrender.com/api/wakeup":`, error)
     }
 }
 
