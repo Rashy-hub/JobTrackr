@@ -1,0 +1,33 @@
+# Name for your service on Render
+service: my-jobtrackr-app
+
+# Build command (if your app requires building): (Optional)
+# Since it's a Node.js app, building is not typically required.
+
+# Web service type (set to "nodejs" for Node.js apps)
+type: web
+
+# Environment variables (replace placeholders with your actual values)
+env:
+    MONGODB_URI: MONGODB_URI # Replace with your MongoDB connection string
+    PORT: PORT # Replace with desired port (default: 3000)
+
+# Code source (set to "git" for deploying from a Git repository)
+framework: git
+
+# Git repository details
+git:
+    # Replace with the URL of your GitHub repository
+    repo: https://github.com/Rashy-hub/JobTrackr
+    # Optional: Branch to deploy (defaults to "main")
+    branch: main
+
+# Watch paths to trigger redeploys (optional)
+watch:
+    - server.js
+    - models/*.js # Include your Mongoose models here
+
+# Set the root directory of your app (defaults to the project root)
+# If your app structure is different, adjust this accordingly.
+# (Optional)
+# working_dir: ./my-app  # Replace with your app directory if needed

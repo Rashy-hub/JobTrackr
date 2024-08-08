@@ -15,7 +15,7 @@ const getProfile = async (req, res) => {
         }
 
         const user = await User.findById(userId)
-        console.log(user)
+
         if (user) {
             res.json({
                 _id: user._id,
