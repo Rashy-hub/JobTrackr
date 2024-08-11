@@ -4,7 +4,6 @@ const express = require('express')
 const cors = require('cors')
 const cron = require('node-cron')
 const mongoose = require('mongoose')
-const path = require('path')
 const jobRouter = require('./routes/job-route')
 const authRouter = require('./routes/auth-route')
 const logRequest = require('./middleware/request-logger')
@@ -38,7 +37,6 @@ mongoose
 
 app.use(logRequest)
 app.use(express.urlencoded({ extended: false }))
-app.use(express.static(path.join(__dirname, 'public'))) // Serve static assets from public folder
 
 // Routes
 registratedRoutes.push(jobRouter)
