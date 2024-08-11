@@ -38,6 +38,7 @@ mongoose
 
 app.use(logRequest)
 app.use(express.urlencoded({ extended: false }))
+app.use(express.static(path.join(__dirname, 'public'))) // Serve static assets from public folder
 
 // Routes
 registratedRoutes.push(jobRouter)
