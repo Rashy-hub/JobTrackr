@@ -1,5 +1,5 @@
 const axios = require('axios')
-// Fonction pour faire une requête à soi-même
+// Fonction pour faire une requête à soi-même , un cool moyen de bypass la limitation de render (auto-sleep) :D
 //SELF_URL='http:/localhost:8080/api/wakeup'
 
 const wakeUpSelf = async () => {

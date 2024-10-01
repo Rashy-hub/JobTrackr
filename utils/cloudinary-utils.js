@@ -33,12 +33,3 @@ const uploadToCloudinary = (resourceType, folderPath, buffer, publicId) => {
 module.exports = {
     uploadToCloudinary,
 }
-/*
-const uploadCv = async (buffer) => {
-    return uploadToCloudinary('application/pdf', 'jobApplyTracker/CV', buffer)
-}
-
-const uploadProfilePicture = async (buffer) => {
-    return uploadToCloudinary('image/jpg', 'jobApplyTracker/profilePicture', buffer)
-}
- */

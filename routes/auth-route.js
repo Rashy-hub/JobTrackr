@@ -23,9 +23,6 @@ const cloudinaryUpload = cloudinaryMiddleware({
     folderPath: 'jobApplyTracker/profiles',
 })
 
-// Use multer and cloudinary middleware in the registration route
-//authRouter.post('/auth/register', multerMiddleware(multerOptions), cloudinaryMiddleware(), bodyValidation(registerValidator), authController.register)
-
 authRouter.post(
     '/auth/register',
     uploadProfileFiles,
@@ -34,8 +31,7 @@ authRouter.post(
     cloudinaryUpload,
     authController.updateUserWithFiles
 )
-// cloudinaryMiddleware({ folderPath: 'jobApplyTracker' }),
-//authRouter.post('/auth/register', bodyValidation(registerValidator), authController.register)
+
 authRouter.post('/auth/login', bodyValidation(loginValidator), authController.login)
 authRouter.post('/auth/refresh', bodyValidation(refreshValidator), authController.refresh)
 

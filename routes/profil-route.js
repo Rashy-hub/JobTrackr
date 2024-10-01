@@ -1,15 +1,3 @@
-/* const ProfilController = require('../controllers/profil-controller')
-const { authentificateJwt } = require('../middlewares/authentificate-jwt')
-const multerConfig = require('../middlewares/multer-config')
-
-const profilRouter = require('express').Router() */
-
-// Routing pour les acces utilisateur
-// - Route "/register" pour créer un compte et récuperer un token d'identification
-// - Route "/login" pour obtenir un JSON Web Token d'identification
-
-//profilRouter.route('/user/update').post(authentificateJwt(), multerConfig('avatar_image'), ProfilController.update)
-
 const express = require('express')
 const { authenticateJwt } = require('../middleware/authenticate-jwt')
 const { getProfile, updateProfile } = require('../controllers/profil-controller')
@@ -36,8 +24,7 @@ const cloudinaryUpload = cloudinaryMiddleware({
 // Route to get the profile
 profilRouter.get('/profile', authenticateJwt(), getProfile)
 
-// Route to update the profile
-profilRouter.put('/profile', authenticateJwt(), uploadProfileFiles, cloudinaryUpload, updateProfile) // Handle file uploads
-// Upload files to Cloudinary
+// Route to update the profile and uploade to cloudinary files
+profilRouter.put('/profile', authenticateJwt(), uploadProfileFiles, cloudinaryUpload, updateProfile)
 
 module.exports = profilRouter
