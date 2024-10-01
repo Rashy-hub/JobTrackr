@@ -4,21 +4,19 @@ const { ErrorResponse } = require('../utils/error-schema')
 const UserModel = require('../models/user')
 
 const authController = {
-    /*     register: async (req, res) => {
+    register: async (req, res, next) => {
         const { firstname, lastname, email, password } = req.validatedData
-        console.log('Getting inside the register controller endpoint')
 
         try {
-            // Check if the email already exists
-
+            //Check if the user emaill already exists in Database
             const existingUser = await UserModel.findOne({ email })
             if (existingUser) {
                 return res.status(422).json(new ErrorResponse('Email already in use', 422))
             }
-            console.log('before saving')
+            //If user email is new , generate hash with salt the given password for bcrypt
             const salt = await bcrypt.genSalt(10)
             const hashedPassword = await bcrypt.hash(password, salt)
-
+            //Then store the new registred user with the hashed password
             const newUser = new UserModel({
                 firstname,
                 lastname,
@@ -26,89 +24,9 @@ const authController = {
                 password: hashedPassword,
             })
 
-            // Save to the database
-
-            const savedUser = await newUser.save()
-
-            const token = await generateJWT({
-                id: savedUser._id,
-                firstname: savedUser.firstname,
-                lastname: savedUser.lastname,
-            })
-
-            res.json({
-                title: 'Registration Successful',
-                message: `${firstname} ${lastname} has been registered`,
-                token: token.token,
-                user: {
-                    id: savedUser._id,
-                    firstname: savedUser.firstname,
-                    lastname: savedUser.lastname,
-                    email: savedUser.email,
-                },
-            })
-        } catch (error) {
-            res.status(422).json(new ErrorResponse('Registration failed: ' + error.message, 422))
-        }
-    },
- */ register: async (req, res, next) => {
-        console.log('Getting inside the register controller endpoint')
-        const { firstname, lastname, email, password } = req.validatedData
-
-        try {
-            const existingUser = await UserModel.findOne({ email })
-            if (existingUser) {
-                return res.status(422).json(new ErrorResponse('Email already in use', 422))
-            }
-            console.log('before saving')
-            const salt = await bcrypt.genSalt(10)
-            const hashedPassword = await bcrypt.hash(password, salt)
-
-            const newUser = new UserModel({
-                firstname,
-                lastname,
-                email,
-                password: hashedPassword,
-            })
-
-            // Ajouter les résultats des téléchargements Cloudinary
-            /*           if (req.uploadResults) {
-                req.uploadResults.forEach((upload) => {
-                    if (upload.fieldname === 'profilePicture' && upload.result) {
-                        newUser.profilePicture = {
-                            public_id: upload.result.public_id,
-                            url: upload.result.secure_url,
-                        }
-                    }
-                    if (upload.fieldname === 'cv' && upload.result) {
-                        newUser.CV = {
-                            public_id: upload.result.public_id,
-                            url: upload.result.secure_url,
-                        }
-                    }
-                })
-            }
- */
             const savedUser = await newUser.save()
             req.user = { id: savedUser._id }
-            // req.user.id = savedUser._id
-            /*          const token = await generateJWT({
-                id: savedUser._id,
-                firstname: savedUser.firstname,
-                lastname: savedUser.lastname,
-            })
 
-            res.json({
-                title: 'Registration Successful',
-                message: `${firstname} ${lastname} has been registered`,
-                token: token.token,
-                user: {
-                    id: savedUser._id,
-                    firstname: savedUser.firstname,
-                    lastname: savedUser.lastname,
-                    email: savedUser.email,
-                },
-            }) */
             next()
         } catch (error) {
             res.status(422).json(new ErrorResponse('Registration failed: ' + error.message, 422))
@@ -207,7 +125,6 @@ const authController = {
                 return res.status(404).json({ message: 'User not found' })
             }
 
-            // Generate JWT
             const token = await generateJWT({
                 id: user._id,
                 firstname: user.firstname,
