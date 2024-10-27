@@ -62,10 +62,10 @@ app.use('*', extractRoutes, (req, res) => {
     res.status(404).json(responseBody)
 })
 // Planifier une tâche cron toutes les 14 minutes
-cron.schedule('*/14 * * * *', () => {
-    console.log('Envoi de la requête pour éviter la mise en veille...')
-    wakeUpSelf()
-})
+// cron.schedule('*/14 * * * *', () => {
+// console.log('Envoi de la requête pour éviter la mise en veille...')
+//  wakeUpSelf()
+//})
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port} - in ${NODE_ENV} environnement`)
